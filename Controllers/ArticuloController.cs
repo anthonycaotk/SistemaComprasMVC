@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaComprasMVC.Data;
-using SistemaComprasMVC.Models;  // prueba git
+using SistemaComprasMVC.Models;
 
 namespace SistemaComprasMVC.Controllers
 {
@@ -48,13 +48,11 @@ namespace SistemaComprasMVC.Controllers
         // GET: Articulo/Create
         public IActionResult Create()
         {
-            ViewData["UnidadDeMedidaId"] = new SelectList(_context.UnidadesDeMedida, "Id", "Id");
+            ViewData["UnidadDeMedidaId"] = new SelectList(_context.UnidadesDeMedida, "Id", "Descripcion");
             return View();
         }
 
         // POST: Articulo/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Descripcion,Marca,UnidadDeMedidaId,Existencia,Estado")] Articulo articulo)
@@ -65,7 +63,7 @@ namespace SistemaComprasMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UnidadDeMedidaId"] = new SelectList(_context.UnidadesDeMedida, "Id", "Id", articulo.UnidadDeMedidaId);
+            ViewData["UnidadDeMedidaId"] = new SelectList(_context.UnidadesDeMedida, "Id", "Descripcion", articulo.UnidadDeMedidaId);
             return View(articulo);
         }
 
@@ -82,13 +80,11 @@ namespace SistemaComprasMVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["UnidadDeMedidaId"] = new SelectList(_context.UnidadesDeMedida, "Id", "Id", articulo.UnidadDeMedidaId);
+            ViewData["UnidadDeMedidaId"] = new SelectList(_context.UnidadesDeMedida, "Id", "Descripcion", articulo.UnidadDeMedidaId);
             return View(articulo);
         }
 
         // POST: Articulo/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Descripcion,Marca,UnidadDeMedidaId,Existencia,Estado")] Articulo articulo)
@@ -118,7 +114,7 @@ namespace SistemaComprasMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UnidadDeMedidaId"] = new SelectList(_context.UnidadesDeMedida, "Id", "Id", articulo.UnidadDeMedidaId);
+            ViewData["UnidadDeMedidaId"] = new SelectList(_context.UnidadesDeMedida, "Id", "Descripcion", articulo.UnidadDeMedidaId);
             return View(articulo);
         }
 
@@ -148,21 +144,21 @@ namespace SistemaComprasMVC.Controllers
         {
             if (_context.Articulos == null)
             {
-                return Problem("Entity set 'SistemaComprasContext.Articulos'  is null.");
+                return Problem("Entity set 'SistemaComprasContext.Articulos' is null.");
             }
             var articulo = await _context.Articulos.FindAsync(id);
             if (articulo != null)
             {
                 _context.Articulos.Remove(articulo);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ArticuloExists(int id)
         {
-          return (_context.Articulos?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Articulos?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
