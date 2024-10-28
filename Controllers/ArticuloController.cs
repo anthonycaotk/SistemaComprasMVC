@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaComprasMVC.Data;
-using SistemaComprasMVC.Models;
+using SistemaComprasMVC.Models;  // prueba git
 
 namespace SistemaComprasMVC.Controllers
 {
