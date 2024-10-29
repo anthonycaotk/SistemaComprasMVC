@@ -57,14 +57,21 @@ namespace SistemaComprasMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Descripcion,Marca,UnidadDeMedidaId,Existencia,Estado")] Articulo articulo)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(articulo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Aquí puedes registrar o inspeccionar el estado del modelo si no es válido
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    Console.WriteLine(error.ErrorMessage); // Depurar errores de validación
+                }
+                ViewData["UnidadDeMedidaId"] = new SelectList(_context.UnidadesDeMedida, "Id", "Descripcion", articulo.UnidadDeMedidaId);
+                return View(articulo);
             }
-            ViewData["UnidadDeMedidaId"] = new SelectList(_context.UnidadesDeMedida, "Id", "Descripcion", articulo.UnidadDeMedidaId);
-            return View(articulo);
+
+            _context.Add(articulo);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Articulo/Edit/5
